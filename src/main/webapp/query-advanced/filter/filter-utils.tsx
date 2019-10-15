@@ -8,8 +8,10 @@ export const withRemoveButton = (Component: any) => {
     return typeof props.onRemove === 'function' ? (
       <Box style={{ display: 'flex', alignItems: 'center' }}>
         <Component {...props} />
-        <Box style={{ margin: 10 }}>
+        <Box style={{ float: 'right' }}>
+          <Button>
             <DeleteForeverRounded onClick={() => props.onRemove()} />
+          </Button>
         </Box>
       </Box>
     ) : (

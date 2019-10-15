@@ -29,7 +29,7 @@ type FilterProps = FilterType & {
 const onCard = (Component: any) => {
   return (props: any) => {
     return (
-      <Card>
+      <Card style={{backgroundColor:'rgba(0,0,0,0.1)'}}>
         <CardContent>
           <Component {...props} />
         </CardContent>

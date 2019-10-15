@@ -32,16 +32,18 @@ const getValue = (props: FilterGroupProps) => {
 
 export const FilterGroup = (props: FilterGroupProps) => {
   return (
-    <Card>
-      <CardHeader subheader={(<Header {...props} />)}>
-      </CardHeader>
-
+    <Card style={{backgroundColor:'rgba(0,0,0,0.1)'}}>
+      <CardHeader
+        style={{ backgroundColor: 'rgba(0,0,255, 0.5)' }}
+        subheader={<Header {...props} />}
+      ></CardHeader>
+      
       <FilterList {...props} />
     </Card>
   )
 }
 
-const Header = (props: FilterGroupProps) => {
+const Header = withRemoveButton((props: FilterGroupProps) => {
   return (
     <Box style={{ display: 'flex' }}>
       <Operator
@@ -79,7 +81,7 @@ const Header = (props: FilterGroupProps) => {
     </Box>
   )
 }
-
+)
 const FilterList = (props: FilterGroupProps) => {
   return (
     <Box>
@@ -99,7 +101,7 @@ const FilterList = (props: FilterGroupProps) => {
         }
         if (isFilterGroup(filter)) {
           return (
-            <Box key={i} style={{ margin: 10, marginLeft: 0 }}>
+            <Box key={i} style={{ margin: 10, marginLeft: 50 }}>
               <FilterGroup
                 limitDepth={
                   props.limitDepth !== undefined
@@ -114,7 +116,7 @@ const FilterList = (props: FilterGroupProps) => {
           )
         } else {
           return (
-            <Box key={i} style={{ margin: 10, marginLeft: 0 }}>
+            <Box key={i} style={{ margin: 10, marginLeft: 50 }}>
               <Filter {...filter} onChange={onChange} onRemove={onRemove} />
             </Box>
           )
