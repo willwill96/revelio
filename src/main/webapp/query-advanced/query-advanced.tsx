@@ -7,7 +7,7 @@ const QueryAdvanced = (props: FilterGroupProps) => {
     <Paper
       style={{
         overflow: 'auto',
-        maxWidth: 700,
+        maxWidth: 1600,
         maxHeight: '100%',
         padding: 20,
       }}

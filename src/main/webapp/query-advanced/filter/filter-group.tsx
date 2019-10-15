@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { FilterType, Filter } from './filter'
-import { Box, Button } from '@material-ui/core'
+import { Box, Button, Card, CardHeader } from '@material-ui/core'
 import { Add } from '@material-ui/icons'
 import {
   defaultFilter,
@@ -30,16 +30,16 @@ const getValue = (props: FilterGroupProps) => {
   return { type, filters }
 }
 
-export const FilterGroup = withRemoveButton(
-  withDivider((props: FilterGroupProps) => {
-    return (
-      <Box>
-        <Header {...props} />
-        <FilterList {...props} />
-      </Box>
-    )
-  })
-)
+export const FilterGroup = (props: FilterGroupProps) => {
+  return (
+    <Card>
+      <CardHeader subheader={(<Header {...props} />)}>
+      </CardHeader>
+
+      <FilterList {...props} />
+    </Card>
+  )
+}
 
 const Header = (props: FilterGroupProps) => {
   return (

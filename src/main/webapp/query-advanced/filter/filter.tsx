@@ -1,11 +1,21 @@
 import * as React from 'react'
-import { Box, TextField } from '@material-ui/core'
+import {
+  Box,
+  TextField,
+  Card,
+  CardHeader,
+  CardContent,
+  Typography,
+} from '@material-ui/core'
 import {
   filterComponentStyle,
   withDivider,
   withRemoveButton,
 } from './filter-utils'
 import { AttributeMenu, ComparatorMenu } from './filter-dropdowns'
+import { Map } from 'immutable'
+import Location from '../../location'
+
 export type FilterType = {
   attribute: string
   comparator: string
@@ -15,18 +25,29 @@ type FilterProps = FilterType & {
   onChange: (value: FilterType) => void
   onRemove?: () => void
 }
-export const Filter = withRemoveButton(
-  withDivider((props: FilterProps) => {
+
+const onCard = (Component: any) => {
+  return (props: any) => {
+    return (
+      <Card>
+        <CardContent>
+          <Component {...props} />
+        </CardContent>
+      </Card>
+    )
+  }
+}
+
+export const Filter = onCard(
+  withRemoveButton((props: FilterProps) => {
     return (
       <Box
         style={{
-          display: 'flex',
-          flexDirection: 'column',
           minWidth: '325px',
-          maxWidth: '400px',
+          maxWidth: '350px',
         }}
       >
-        <Box>
+        <Box style={{ width: '100%' }}>
           <AttributeMenu
             onChange={(val: string) => {
               const { comparator, value } = props
@@ -40,7 +61,11 @@ export const Filter = withRemoveButton(
               const { attribute, value } = props
               props.onChange({ attribute, value, comparator: val })
             }}
-            style={{ width: '48%', float: 'right', ...filterComponentStyle }}
+            style={{
+              width: '48%',
+              float: 'right',
+              ...filterComponentStyle,
+            }}
             selected={props.comparator}
             options={['Contains', 'MatchCase', '=']}
           />
@@ -53,7 +78,11 @@ export const Filter = withRemoveButton(
           style={{ ...filterComponentStyle }}
           onChange={event => {
             const { attribute, comparator } = props
-            props.onChange({ attribute, comparator, value: event.target.value })
+            props.onChange({
+              attribute,
+              comparator,
+              value: event.target.value,
+            })
           }}
         />
       </Box>
