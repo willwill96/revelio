@@ -1,8 +1,8 @@
 import * as React from 'react'
 import useAnchorEl from '../../react-hooks/use-anchor-el'
-import { Button, Popover, MenuItem } from '@material-ui/core'
+import { Button, Popover, MenuItem, Fab } from '@material-ui/core'
 import { ArrowDropDown } from '@material-ui/icons'
-import { filterHeaderButtonStyle } from './filter-utils'
+import { filterHeaderButtonStyle } from './filter-group'
 const operators = ['AND', 'OR', 'NOT AND', 'NOT OR']
 
 const withOperators = (Component: any) => {
@@ -21,14 +21,14 @@ const Operator = withOperators((props: OperatorProps) => {
   const [anchorEl, open, close] = useAnchorEl()
   return (
     <React.Fragment>
-      <Button
+      <Fab
         style={filterHeaderButtonStyle}
-        variant="outlined"
+        variant="extended"
         onClick={open as any}
       >
         {props.selected}
         <ArrowDropDown />
-      </Button>
+      </Fab>
       <Popover
         transformOrigin={{ vertical: 'top', horizontal: 'center' }}
         anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}

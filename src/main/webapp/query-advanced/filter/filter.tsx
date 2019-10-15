@@ -9,12 +9,9 @@ import {
 } from '@material-ui/core'
 import {
   filterComponentStyle,
-  withDivider,
   withRemoveButton,
 } from './filter-utils'
 import { AttributeMenu, ComparatorMenu } from './filter-dropdowns'
-import { Map } from 'immutable'
-import Location from '../../location'
 
 export type FilterType = {
   attribute: string
@@ -30,9 +27,7 @@ const onCard = (Component: any) => {
   return (props: any) => {
     return (
       <Card style={{backgroundColor:'rgba(0,0,0,0.1)'}}>
-        <CardContent>
           <Component {...props} />
-        </CardContent>
       </Card>
     )
   }
@@ -43,11 +38,11 @@ export const Filter = onCard(
     return (
       <Box
         style={{
-          minWidth: '325px',
-          maxWidth: '350px',
+          minWidth: '400px',
+          maxWidth: '450px'
         }}
       >
-        <Box style={{ width: '100%' }}>
+        <Box>
           <AttributeMenu
             onChange={(val: string) => {
               const { comparator, value } = props
@@ -75,7 +70,6 @@ export const Filter = onCard(
           placeholder="Use * for wildcard"
           variant="outlined"
           fullWidth
-          style={{ ...filterComponentStyle }}
           onChange={event => {
             const { attribute, comparator } = props
             props.onChange({

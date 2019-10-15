@@ -1,21 +1,32 @@
 import * as React from 'react'
-import { Box, Button } from '@material-ui/core'
-import Fab from '@material-ui/core/Fab'
+import { Box, Fab } from '@material-ui/core'
 import { DeleteForeverRounded } from '@material-ui/icons'
 
 export const withRemoveButton = (Component: any) => {
   return (props: any) => {
-    return typeof props.onRemove === 'function' ? (
-      <Box style={{ display: 'flex', alignItems: 'center' }}>
-        <Component {...props} />
-        <Box style={{ float: 'right' }}>
-          <Button>
-            <DeleteForeverRounded onClick={() => props.onRemove()} />
-          </Button>
+    return (
+      <Box
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: 16,
+        }}
+      >
+        <Box style={{ float: 'left' }}>
+          <Component {...props} />
         </Box>
+        {typeof props.onRemove === 'function' && (
+          <Box style={{ float: 'right', margin: 5 }}>
+            <Fab size="small" variant="extended">
+              <DeleteForeverRounded
+                fontSize="small"
+                onClick={() => props.onRemove()}
+              />
+            </Fab>
+          </Box>
+        )}
       </Box>
-    ) : (
-      <Component {...props} />
     )
   }
 }
@@ -24,13 +35,6 @@ export const defaultFilter = {
   attribute: 'anyText',
   comparator: 'Contains',
   value: '',
-}
-
-export const filterHeaderButtonStyle = {
-  height: 'fit-content',
-  margin: 'auto',
-  marginLeft: 0,
-  marginRight: 10,
 }
 
 export const filterComponentStyle = {
