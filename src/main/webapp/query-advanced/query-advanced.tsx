@@ -4,7 +4,8 @@ import { Paper, Button, Divider, Box, TextField } from '@material-ui/core'
 import FilterGroup from './filter/filter-group'
 import { deserialize, serialize } from './query-advanced-serialization'
 import { FilterContext } from './filter-context'
-import { metacardDefinitions } from './filter/dummyDefinitions'
+import { useQuery } from '@apollo/react-hooks'
+import gql from 'graphql-tag'
 type QuerySettings = {
   title?: string
 }
@@ -28,11 +29,26 @@ const getSettings = (props: QueryAdvancedProps) => {
   return settings
 }
 
+const metacardTypes = gql`
+  query MetacardTypes {
+    metacardTypes {
+      id
+      type
+    }
+  }
+`
+
 const QueryAdvanced = (props: QueryAdvancedProps) => {
   const [filterTree, setFilterTree] = useState(
     deserialize(getFilterTree(props.filterTree))
   )
   const [settings, setSettings] = useState(getSettings(props))
+
+  let attributeDescriptors = [] as any
+  const { loading, error, data = {} as any } = useQuery(metacardTypes)
+  if (!loading && !error) {
+    attributeDescriptors = data.metacardTypes
+  }
 
   return (
     <Paper
@@ -54,7 +70,7 @@ const QueryAdvanced = (props: QueryAdvancedProps) => {
       </Box>
       <FilterContext.Provider
         value={{
-          includedAttributes: Array.from(metacardDefinitions.keys()),
+          attributeDescriptors,
           editing: props.editing !== false,
         }}
       >

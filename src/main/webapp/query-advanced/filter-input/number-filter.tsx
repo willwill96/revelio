@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { QueryFilterProps } from '../filter/filter'
 import { TextField, Box } from '@material-ui/core'
-import { metacardDefinitions } from '../filter/dummyDefinitions'
 import { Map } from 'immutable'
+import { useFilterContext } from '../filter-context'
 
 export const comparatorOptions = [
   '>',
@@ -21,7 +21,7 @@ export const comparatorAliases = Map({
 const intRegex = /^(-?\d*$)|^$/
 const floatRegex = /^-?\d*(\.\d*)?$|^$/
 
-const isInteger = (type: any) =>
+const isInteger = ({ type }: any) =>
   type === 'INTEGER' || type === 'SHORT' || type === 'LONG'
 
 const validateNumber = (num: string) => {
@@ -78,7 +78,12 @@ const NumberInput = (props: any) => {
 }
 
 const NumberFilter = (props: QueryFilterProps) => {
-  const isInt = isInteger(metacardDefinitions.get(props.property))
+  const context = useFilterContext()
+  const isInt = isInteger(
+    context.attributeDescriptors.find(
+      (descriptor: any) => descriptor.id === props.property
+    )
+  )
   if (props.type !== 'BETWEEN') {
     return (
       <NumberInput

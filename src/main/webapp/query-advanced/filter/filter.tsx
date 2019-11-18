@@ -6,7 +6,7 @@ import {
   getDefaultValue,
   filterComponentStyle,
 } from './filter-utils'
-import { metacardDefinitions } from './dummyDefinitions'
+import { metacardDefinitions, MetacardType } from './dummyDefinitions'
 import TextFilter, {
   comparatorOptions as textComparators,
   comparatorAliases as textAliases,
@@ -27,6 +27,7 @@ import NumberFilter, {
 } from '../filter-input/number-filter'
 import { transformValue } from './value-transformations'
 import AttributeDropdown from './attribute-dropdown'
+import { useFilterContext } from '../filter-context'
 
 //In this format to make querying easy
 export type QueryFilter = {
@@ -71,7 +72,13 @@ const Comparators = {
 
 export const Filter = withRemoveButton(
   withDivider((props: QueryFilterProps) => {
-    const type = metacardDefinitions.get(props.property) || 'STRING'
+    const context = useFilterContext()
+    const getType = (property: string) => {
+      return (context.attributeDescriptors.find((descriptor: any) => {
+        descriptor.id === property
+      }).type || 'STRING') as MetacardType
+    }
+    const type = getType(props.property)
     const Component = Inputs[type] || TextFilter
     const comparators = Comparators[type]
 
@@ -95,8 +102,8 @@ export const Filter = withRemoveButton(
           value={props.property}
           onChange={(newProperty: string) => {
             const { property, type, value } = props
-            const prevType = metacardDefinitions.get(property) || 'STRING'
-            const newType = metacardDefinitions.get(newProperty) || 'STRING'
+            const prevType = getType(property)
+            const newType = getType(newProperty)
             if (prevType !== newType) {
               const newComparators = Comparators[newType].options
               props.onChange({
@@ -115,7 +122,7 @@ export const Filter = withRemoveButton(
               let { property, value, type: oldOperator } = props
 
               const newValue = transformValue({
-                propertyType: metacardDefinitions.get(property) || 'STRING',
+                propertyType: getType(property),
                 currentValue: value,
                 oldOperator,
                 newOperator,

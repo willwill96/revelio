@@ -1,9 +1,8 @@
 import * as React from 'react'
 import { useContext } from 'react'
-import { metacardDefinitions } from './filter/dummyDefinitions'
 
 const FilterContext = React.createContext({
-  includedAttributes: Array.from(metacardDefinitions.keys()),
+  attributeDescriptors: [] as any[],
   editing: true,
 })
 const useFilterContext = () => {
