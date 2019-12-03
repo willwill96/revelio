@@ -21,6 +21,7 @@ const methods = {
   delete: 'ddf.catalog/delete',
   getSourceIds: 'ddf.catalog/getSourceIds',
   getSourceInfo: 'ddf.catalog/getSourceInfo',
+  getEnumerationsByType: 'ddf.enumerations/by-type'
 }
 
 const catalog = Object.keys(methods).reduce((catalog, method) => {
@@ -370,16 +371,19 @@ const metacardTypes = async () => {
 const getEnumerations = async () => {
   const { enums } = await (await fetch(`${ROOT}/config`)).json()
 
-  const res = await fetch(`${ROOT}/metacardtype`)
-  const json = await res.json()
+  const metacardTypes = await(await fetch(`${ROOT}/metacardtype`)).json()
 
-  await Promise.all(
-    Object.keys(json).map(async group => {
-      const enumRes = await fetch(`${ROOT}/enumerations/metacardtype/${group}`)
-      const enumJson = await enumRes.json()
-      Object.assign(enums, enumJson)
-    })
-  )
+  const res = await catalog.getEnumerationsByType({ types: Object.keys(metacardTypes)})
+
+  console.log(res)
+
+  // await Promise.all(
+  //   Object.keys(json).map(async group => {
+  //     const enumRes = await fetch(`${ROOT}/enumerations/metacardtype/${group}`)
+  //     const enumJson = await enumRes.json()
+  //     Object.assign(enums, enumJson)
+  //   })
+  // )
   return enums
 }
 

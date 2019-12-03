@@ -41,12 +41,28 @@
     <!--    <property name="monitorLocalSources" value="false"/>-->
   </bean>
 
-  <bean id="jsonRpc" class="org.codice.jsonrpc.JsonRpc">
-    <argument ref="catalogMethods"/>
+  <reference id="defaultAttributeValidatorRegistry" interface="ddf.catalog.validation.AttributeValidatorRegistry" availability="optional"/>
+  <reference-list id="attributeInjectors" interface="ddf.catalog.data.AttributeInjector"
+                  availability="optional"/>
+  <bean id="enumerationExtractor" class="org.codice.ddf.catalog.ui.enumeration.ExperimentalEnumerationExtractor">
+    <argument ref="defaultAttributeValidatorRegistry" />
+    <argument ref="metacardTypes" />
+    <argument ref="attributeInjectors" />
   </bean>
 
+  <bean id="enumerationMethods" class="org.codice.ddf.attribute.enumerations.EnumerationMethods">
+    <argument ref="enumerationExtractor" />
+  </bean>
+
+  <reference-list id="methodSets" interface="org.codice.jsonrpc.MethodSet" />
+
+  <bean id="jsonRpc" class="org.codice.jsonrpc.JsonRpc">
+    <argument ref="methodSets"/>
+  </bean>
+
+
   <bean id="jsonRpcHttpServlet"
-	class="org.codice.jsonrpc.JsonRpcHttpServlet">
+        class="org.codice.jsonrpc.JsonRpcHttpServlet">
     <argument ref="jsonRpc"/>
   </bean>
 
