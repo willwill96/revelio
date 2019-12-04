@@ -27,19 +27,21 @@
     <argument ref="metacardMultiActionProviders" />
   </bean>
 
+  <service id="catalogMethods" interface="org.codice.jsonrpc.MethodSet">
+    <bean
+          class="org.codice.ddf.catalog.direct.CatalogMethods">
+      <argument ref="catalogFramework"/>
+      <argument ref="attributeRegistry"/>
+      <argument ref="metacardTypes"/>
+      <argument ref="filterBuilder"/>
+      <argument ref="metacardActionRegistry"/>
 
-  <bean id="catalogMethods"
-	class="org.codice.ddf.catalog.direct.CatalogMethods">
-    <argument ref="catalogFramework"/>
-    <argument ref="attributeRegistry"/>
-    <argument ref="metacardTypes"/>
-    <argument ref="filterBuilder"/>
-    <argument ref="metacardActionRegistry"/>
+      <!--    <cm:managed-properties persistent-id="org.codice.ddf.resourcemanagement.usage"-->
+      <!--      update-strategy="container-managed"/>-->
+      <!--    <property name="monitorLocalSources" value="false"/>-->
+    </bean>
 
-    <!--    <cm:managed-properties persistent-id="org.codice.ddf.resourcemanagement.usage"-->
-    <!--      update-strategy="container-managed"/>-->
-    <!--    <property name="monitorLocalSources" value="false"/>-->
-  </bean>
+  </service>
 
   <reference id="defaultAttributeValidatorRegistry" interface="ddf.catalog.validation.AttributeValidatorRegistry" availability="optional"/>
   <reference-list id="attributeInjectors" interface="ddf.catalog.data.AttributeInjector"
@@ -50,9 +52,12 @@
     <argument ref="attributeInjectors" />
   </bean>
 
-  <bean id="enumerationMethods" class="org.codice.ddf.attribute.enumerations.EnumerationMethods">
-    <argument ref="enumerationExtractor" />
-  </bean>
+
+  <service id="enumerationMethods" interface="org.codice.jsonrpc.MethodSet">
+    <bean class="org.codice.ddf.attribute.enumerations.EnumerationMethods">
+      <argument ref="enumerationExtractor" />
+    </bean>
+  </service>
 
   <reference-list id="methodSets" interface="org.codice.jsonrpc.MethodSet" />
 
