@@ -7,27 +7,11 @@ import IconButton from '@material-ui/core/IconButton'
 import Collapse from '@material-ui/core/Collapse'
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp'
+import { QuerySettingsType } from './types'
 const ResultFormSelect = require('../user-settings/result-form-select').default
 const { SourcesSelect } = require('../sources')
 const { FilterCard } = require('../basic-search')
 const SortOrder = require('../sort-order').default
-
-export type QuerySettingsType = {
-  sources?: string[]
-  sorts?: string[]
-  detail_level?: string //Result Form Name
-}
-
-const getSorts = (sorts?: string[]) => {
-  if (!sorts) return undefined
-  return sorts.map(sort => {
-    const splitIndex = sort.lastIndexOf(',')
-    return {
-      attribute: sort.substring(0, splitIndex),
-      direction: sort.substring(splitIndex + 1, sort.length),
-    }
-  })
-}
 
 const Section = (props: { title: string; children: ReactNode }) => {
   const [open, setOpen] = useState(true)
@@ -101,17 +85,15 @@ const QuerySettings = (props: QuerySettingsProps) => {
           <FilterCard
             label="Sorts"
             onRemove={() => {
-              props.onChange({ ...settings, sorts: undefined })
+              props.onChange({ ...settings, sorts: null })
             }}
           >
             <SortOrder
-              value={getSorts(settings.sorts)}
+              value={settings.sorts}
               onChange={(value: any) => {
                 props.onChange({
                   ...settings,
-                  sorts: value.map(
-                    (sort: any) => `${sort.attribute},${sort.direction}`
-                  ),
+                  sorts: value,
                 })
               }}
             />
@@ -123,7 +105,7 @@ const QuerySettings = (props: QuerySettingsProps) => {
           <FilterCard
             label="Result Form"
             onRemove={() => {
-              props.onChange({ ...settings, detail_level: undefined })
+              props.onChange({ ...settings, detail_level: null })
             }}
           >
             <ResultFormSelect
