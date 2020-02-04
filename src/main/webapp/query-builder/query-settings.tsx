@@ -84,7 +84,7 @@ const QuerySettings = (props: QuerySettingsProps) => {
           <FilterCard
             label="Sources"
             onRemove={() => {
-              props.onChange({ ...settings, sources: undefined })
+              props.onChange({ ...settings, sources: null })
             }}
           >
             <SourcesSelect
