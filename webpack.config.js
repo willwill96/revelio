@@ -1,7 +1,4 @@
 const path = require('path')
-// const nodeExternals = require('webpack-node-externals')
-
-const nodeResolve = place => require.resolve(place)
 
 module.exports = ['source-map'].map(devtool => ({
   entry: {
@@ -33,14 +30,11 @@ module.exports = ['source-map'].map(devtool => ({
         test: /\.jsx?$/,
         exclude: /(node_modules)/,
         use: {
-          loader: nodeResolve('babel-loader'),
+          loader: 'babel-loader',
           options: {
-            presets: [nodeResolve('@babel/preset-react')],
+            presets: ['@babel/preset-react', '@babel/preset-env'],
             cacheDirectory: true,
-            plugins: [
-              nodeResolve('react-hot-loader/babel'),
-              nodeResolve('react-loadable/babel'),
-            ],
+            plugins: ['react-hot-loader/babel', 'react-loadable/babel'],
           },
         },
       },
